@@ -59,6 +59,14 @@ async function run() {
       res.send(result);
     });
 
+    // delete my toy
+    app.delete("/myToys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.deleteOne(query);
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged!. Successfully connected to MongoDB!");
   } finally {
