@@ -25,12 +25,22 @@ async function run() {
 
     const toyCollection = client.db("toysDB").collection("toys");
 
+    // add a toy
+    app.post("/toy", async (req, res) => {
+      const newToy = req.body;
+      console.log(newToy);
+      const result = await toyCollection.insertOne(newToy);
+      res.send(result);
+    });
+
+    // all toys
     app.get("/toys", async (req, res) => {
       const cursor = toyCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
+    // view details
     app.get("/toys/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -38,10 +48,14 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/toy", async (req, res) => {
-      const newToy = req.body;
-      console.log(newToy);
-      const result = await toyCollection.insertOne(newToy);
+    // my toys
+    app.get("/myToys", async (req, res) => {
+      console.log(req.query);
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query.email };
+      }
+      const result = await toyCollection.find(query).toArray();
       res.send(result);
     });
 
