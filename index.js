@@ -33,30 +33,6 @@ async function run() {
       res.send(result);
     });
 
-    // update toy
-    app.put("/toy/:id", async (req, res) => {
-      const id = req.params.id;
-      const filter = { _id: new ObjectId(id) };
-      const options = { upsert: true };
-      const updatedToy = req.body;
-      const toy = {
-        $set: {
-          picture: updatedToy.picture,
-          toyName: updatedToy.toyName,
-          sellerName: updatedToy.sellerName,
-          email: updatedToy.email,
-          subCategory: updatedToy.subCategory,
-          price: updatedToy.price,
-          rating: updatedToy.rating,
-          availableQuantity: updatedToy.availableQuantity,
-          detailDescription: updatedToy.detailDescription,
-        },
-      };
-
-      const result = await toyCollection.updateOne(filter, toy, options);
-      res.send(result);
-    });
-
     // all toys
     app.get("/toys", async (req, res) => {
       const cursor = toyCollection.find();
@@ -91,15 +67,29 @@ async function run() {
       res.send(result);
     });
 
-    // my toys update
-    // app.patch("/myToys/:id", async (req, res) => {
-    //   const updateMyToy = req.body;
-    //   console.log(updateMyToy);
-    //   // const id = req.params.id;
-    //   // const query = { _id: new ObjectId(id) };
-    //   // const result = await toyCollection.findOne(query);
-    //   // res.send(result);
-    // });
+    // update toy
+    app.put("/toy/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedToy = req.body;
+      const toy = {
+        $set: {
+          picture: updatedToy.picture,
+          toyName: updatedToy.toyName,
+          sellerName: updatedToy.sellerName,
+          email: updatedToy.email,
+          subCategory: updatedToy.subCategory,
+          price: updatedToy.price,
+          rating: updatedToy.rating,
+          availableQuantity: updatedToy.availableQuantity,
+          detailDescription: updatedToy.detailDescription,
+        },
+      };
+
+      const result = await toyCollection.updateOne(filter, toy, options);
+      res.send(result);
+    });
 
     // delete my toy
     app.delete("/myToys/:id", async (req, res) => {
